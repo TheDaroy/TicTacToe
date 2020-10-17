@@ -120,7 +120,7 @@ static public class TicTacToeFunctions
                 else if (y == tiles.GetLength(1) - 2)
                 {
                     
-                    if (tiles[x, x] == playerNR)
+                    if (tiles[x, y] == playerNR)
                     {
                         return TicTacState.Win;
                     }
@@ -175,7 +175,7 @@ static public class TicTacToeFunctions
                    
                     
 
-                    if (tiles[x, x] == playerNR)
+                    if (tiles[x, y] == playerNR)
                     {
                         return TicTacState.Win;
                     }
@@ -255,7 +255,7 @@ static public class TicTacToeFunctions
             else if (y == 1)
             {
                
-                if (tiles[x, x] == playerNR)
+                if (tiles[x, y] == playerNR)
                 {
                     return TicTacState.Win;
                 }
