@@ -78,8 +78,8 @@ public class AI : Player
 
     void BestMove(int[,] dummyArray)
     {
-        
-        int bestScore = int.MinValue;
+
+        int bestScore;
         int bestX = 0;
         int bestY = 0;
         int alpha = int.MinValue;
@@ -92,21 +92,22 @@ public class AI : Player
                 if (dummyArray[x, y] == 0)
                 {
                     dummyArray[x, y] = playerNummber;
-                    int newScore = MiniMax(dummyArray, 0, false, alpha, beta);
+                    bestScore = MiniMax(dummyArray, 0, false, alpha, beta);
                     dummyArray[x, y] = 0;
-                    if (newScore > bestScore)
+                    if (bestScore > alpha)
                     {
-                        bestScore = newScore;
+                        alpha = bestScore;
                         bestX = x;
                         bestY = y;
                         
                     }
-                    alpha = Math.Max(alpha, bestScore);
+                    //alpha = Math.Max(alpha, bestScore);
                     if (beta <= alpha)
                     {
                         break;
                     }
                 }
+                
             }
         }
        // Debug.Log("Base Turns: " + i);
@@ -118,7 +119,7 @@ public class AI : Player
     {
         NodesTaken++;
         TicTacState currentState = TicTacToeFunctions.VictoryCheck(dummyArray, depth, false, playerNummber);   
-        if (currentState != TicTacState.None )
+        if ( currentState != TicTacState.None )
         {
             return ScoreCheck(currentState, depth);
         }
@@ -126,7 +127,7 @@ public class AI : Player
         int score;     
         if (maximizing)
         {
-            score = int.MinValue;
+            //score = int.MinValue;
             for (int x = 0; x < dummyArray.GetLength(0); x++)
             {
                 for (int y = 0; y < dummyArray.GetLength(1); y++)
@@ -134,35 +135,39 @@ public class AI : Player
                     if (dummyArray[x, y] == 0)
                     {
                         dummyArray[x, y] = playerNummber;
-                        int newScore = MiniMax(dummyArray, depth++, false, alpha, beta);
+                        score = MiniMax(dummyArray, depth++, false, alpha, beta);
                         dummyArray[x, y] = 0;
-                        score = Math.Max(newScore, score);
+                       // score = Math.Max(newScore, score);
                         alpha = Math.Max(alpha, score);
                         if (beta <= alpha) {break;}                      
                     }
+                    if (beta <= alpha) { break; }
                 }
-            }                   
+            }
+            return alpha;
         }
         else
         {
-            score = int.MaxValue;
+           // score = int.MaxValue;
             for (int x = 0; x < dummyArray.GetLength(0); x++)
             {
                 for (int y = 0; y < dummyArray.GetLength(1); y++)
                 {
                     if (dummyArray[x, y] == 0)
                     {
-                        dummyArray[x, y] = 2;
-                        int newScore = MiniMax(dummyArray, depth++, true,alpha,beta);
+                        dummyArray[x, y] = 1;
+                        score = MiniMax(dummyArray, depth++, true,alpha,beta);
                         dummyArray[x, y] = 0;
-                        score = Math.Min(score, newScore);
+                        //score = Math.Min(score, newScore);
                         beta = Math.Min(beta, score);
                         if (beta <= alpha){break;}
                     }
+                    if (beta <= alpha) { break; }
                 }
             }
+            return beta;
         }
-        return score;
+        
     }
 
     int ScoreCheck(TicTacState state, int depth)
@@ -173,10 +178,10 @@ public class AI : Player
                 return 0;
 
             case TicTacState.Lose:
-                return -10 + depth;
+                return -1 ;
 
             case TicTacState.Win:
-                return 10 - depth;
+                return 1;
 
             default:
                 return 0;

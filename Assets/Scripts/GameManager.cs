@@ -13,8 +13,8 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         players = new Player[2];
-        AddPlayer<AI>(0);
-        AddPlayer<Human>(1);
+        AddPlayer<Human>(0);
+        AddPlayer<AI>(1);
     }
     void AddPlayer<T> (int i) where T : Player 
     {
